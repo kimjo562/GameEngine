@@ -25,7 +25,7 @@ namespace GameEngine
         // Move one space to the right.
         private void MoveRight()
         {
-            if(X != MyScene.SizeX - 1)
+            if(!CurrentScene.GetCollision(X + 1, Y))
             {
                 X++;
             }
@@ -34,7 +34,7 @@ namespace GameEngine
         // Move one space to the left.
         private void MoveLeft()
         {
-            if(X != 0)
+            if(!CurrentScene.GetCollision(X - 1, Y))
             {
                 X--;
             }
@@ -42,7 +42,7 @@ namespace GameEngine
 
         private void MoveUp()
         {
-            if (Y != 0)
+            if (!CurrentScene.GetCollision(X, Y - 1))
             {
                 Y--;
             }
@@ -50,7 +50,7 @@ namespace GameEngine
 
         private void MoveDown()
         {
-            if (Y != MyScene.SizeY - 1)
+            if (!CurrentScene.GetCollision(X, Y + 1))
             {
                 Y++;
             }

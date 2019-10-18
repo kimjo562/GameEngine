@@ -12,18 +12,23 @@ namespace GameEngine
         private List<Entity> _entities = new List<Entity>();
         private int _sizeX;
         private int _sizeY;
+        // Grid for collision detection
+        private bool[,] _wallCollision;
 
-        public Scene()
+        public Scene() : this(24, 8)
         {
-            // If a size has not been set, it will default to this number.
-            _sizeX = 24;
-            _sizeY = 8;
+            // If a size has not been set, it will default to this number. (public Scene() : "this" will also do this...)
+            //_sizeX = 24;
+            //_sizeY = 8;
         }
 
         public Scene(int sizeX, int sizeY)
         {
             _sizeX = sizeX;
             _sizeY = sizeY;
+            // Create the collison grid
+            _wallCollision = new bool[_sizeX, _sizeY];
+
         }
 
         public int SizeX
@@ -57,6 +62,16 @@ namespace GameEngine
             foreach (Entity e in _entities)
             {
                 e.Update();
+                int x = (int)e.X;
+                int y = (int)e.Y;
+                if(e.X >= 0 && e.X < _sizeX && e.Y >= 0 && e.Y < _sizeY)
+                {
+                    if(!_wallCollision[x,y])
+                    {
+                        _wallCollision[x, y] = e.Solid;
+                    }
+                }
+
             }
         }
 
@@ -74,7 +89,7 @@ namespace GameEngine
                 // Position each Entity's icon in the display.
                 if (e.X >= 0 && e.X < _sizeX && e.Y >= 0 && e.Y < _sizeY)
                 {
-                    display[e.X, e.Y] = e.Icon;
+                    display[(int)e.X, (int)e.Y] = e.Icon;
                 }
             }
 
@@ -84,7 +99,7 @@ namespace GameEngine
                 {
                     Console.Write(display[j, i]);
                 }
-                Console.WriteLine("|");
+                Console.WriteLine();
             }
             //            Console.Write("Say Oi Boi: " + counter);
         }
@@ -92,22 +107,37 @@ namespace GameEngine
         public void AddEntity(Entity entity)
         {
             _entities.Add(entity);
-            entity.MyScene = this;
+            entity.CurrentScene = this;
         }
 
         public void RemoveEntity(Entity entity)
         {
             _entities.Remove(entity);
-            entity.MyScene = null;
+            entity.CurrentScene = null;
         }
 
+        // Clear the Scene of Entity
         public void ClearEntities()
         {
             foreach (Entity e in _entities)
             {
-                e.MyScene = null;
+                e.CurrentScene = null;
             }
             _entities.Clear();
         }
+
+        // Returns whether there is a solid Entity at the point.
+        public bool GetCollision(float x, float y)
+        {
+            if(x >= 0 && y >= 0 && x < _sizeX && y < _sizeY)
+            {
+                return _wallCollision[(int)x, (int)y];
+            }
+            else
+            {
+                return true;
+            }
+        }
+
     }
 }

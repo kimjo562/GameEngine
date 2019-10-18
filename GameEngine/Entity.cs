@@ -14,14 +14,37 @@ namespace GameEngine
         public Event OnUpdate;
         public Event OnDraw;
 
-        public char Icon { get; set; } = ' ';
+        private Vector2 _location = new Vector2();
 
-        public int X { get; set; } = 0;
-        public int Y { get; set; } = 0;
+        public char Icon { get; set; } = ' ';
+        public bool Solid { get; set; } = false;
+        public float X
+        {
+            get
+            {
+                return _location.x;
+            }
+            set
+            {
+                _location.x = value;
+            }
+        }
+
+        public float Y
+        {
+            get
+            {
+                return _location.y;
+            }
+            set
+            {
+                _location.y = value;
+            }
+        }
 
         private Scene _scene;
 
-        public Scene MyScene
+        public Scene CurrentScene
         {
             set
             {
