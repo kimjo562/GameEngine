@@ -10,6 +10,7 @@ namespace GameEngine
 
     class Entity
     {
+        // The List of all the Entities in the Scene
         public Event OnStart;
         public Event OnUpdate;
         public Event OnDraw;

@@ -9,12 +9,22 @@ namespace GameEngine
 {
     class Scene
     {
+        // The List of all the Entities in the Scene
+        public Event OnStart;
+        public Event OnUpdate;
+        public Event OnDraw;
+
+        // The List of all the Entities in the Scene
         private List<Entity> _entities = new List<Entity>();
+        //The Size of the Scene
         private int _sizeX;
         private int _sizeY;
         // Grid for collision detection
         private bool[,] _wallCollision;
+        // The grid for Entity Tracking
+        private List<Entity>[,] _tracking;
 
+        // Creates a Scene with a size of 24 x 8
         public Scene() : this(24, 8)
         {
             // If a size has not been set, it will default to this number. (public Scene() : "this" will also do this...)
@@ -22,12 +32,17 @@ namespace GameEngine
             //_sizeY = 8;
         }
 
+        // Creates a new Scene with the specified size
+        // sizeX the horizontal side of the Scene
+        // sizeY the vertical side of the Scene
         public Scene(int sizeX, int sizeY)
         {
             _sizeX = sizeX;
             _sizeY = sizeY;
             // Create the collison grid
             _wallCollision = new bool[_sizeX, _sizeY];
+            // Create the tracking grid
+            _tracking = new List<Entity>[_sizeX, _sizeY];
 
         }
 
@@ -50,6 +65,7 @@ namespace GameEngine
         //        int counter = 0;
         public void Start()
         {
+            OnStart?.Invoke();
             foreach (Entity e in _entities)
             {
                 e.Start();
@@ -58,14 +74,31 @@ namespace GameEngine
 
         public void Update()
         {
-            //            counter++;
+            OnUpdate?.Invoke();
+
+            // Clear the tracking grid
+            for (int y = 0; y < _sizeY; y++)
+            {
+                for (int x = 0; x < _sizeX; x++)
+                {
+                    _tracking[x, y] = new List<Entity>();
+                }
+
+            }
+  
+            // Clears the collision grid
             foreach (Entity e in _entities)
             {
+                // Call the Entity's Update events
                 e.Update();
+                // Set the Entity's collision in the collision grid
                 int x = (int)e.X;
                 int y = (int)e.Y;
                 if(e.X >= 0 && e.X < _sizeX && e.Y >= 0 && e.Y < _sizeY)
                 {
+                    // Add the Entity to the tracking grid
+                    _tracking[x, y].Add(e);
+                    // Only update this point in the gird if the Entity is solid
                     if(!_wallCollision[x,y])
                     {
                         _wallCollision[x, y] = e.Solid;
@@ -75,8 +108,11 @@ namespace GameEngine
             }
         }
 
+        // Called in game every step to render each Entitiy in game
         public void Draw()
         {
+            OnDraw?.Invoke();
+
             // Clear the screen.
             Console.Clear();
 
@@ -129,13 +165,30 @@ namespace GameEngine
         // Returns whether there is a solid Entity at the point.
         public bool GetCollision(float x, float y)
         {
+            // Ensure the point is within the Scene
             if(x >= 0 && y >= 0 && x < _sizeX && y < _sizeY)
             {
                 return _wallCollision[(int)x, (int)y];
             }
+            // A point outside the Scene is a Collision (if set to true)
             else
             {
                 return true;
+            }
+        }
+
+        // Returns the List of Entities at a specified point
+        public List<Entity> GetEntities(float x, float y)
+        {
+            // Ensures the point is within the Scene
+            if (x >= 0 && y >= 0 && x < _sizeX && y < _sizeY)
+            {
+                return _tracking[(int)x, (int)y];
+            }
+            // A point outside the SCene is not a collision
+            else
+            {
+                return new List<Entity>();
             }
         }
 
