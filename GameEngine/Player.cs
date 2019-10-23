@@ -9,17 +9,28 @@ namespace GameEngine
     class Player : Entity
     {
         // Instead of using base we can use this (which will "this" will go to icon and to the "base" icon and goes through all the constuctors).
-        public Player() : this('■')
+        public Player() : this('@')
         {
 
         }
 
+        public Player(string imageName) : base('@', imageName)
+        {
+            // Binds movement methods to wasd.
+            PlayerInput.AddKeyEvent(MoveRight, 100); // D
+            PlayerInput.AddKeyEvent(MoveLeft, 97); // A
+            PlayerInput.AddKeyEvent(MoveUp, 119); // W
+            PlayerInput.AddKeyEvent(MoveDown, 115); // S
+        }
+
+        // Creates a new PLayer with the specified symbol and adds movement key event.
         public Player(char icon) : base(icon)
         {
-            PlayerInput.AddKeyEvent(MoveRight, ConsoleKey.RightArrow);
-            PlayerInput.AddKeyEvent(MoveLeft, ConsoleKey.LeftArrow);
-            PlayerInput.AddKeyEvent(MoveUp, ConsoleKey.UpArrow);
-            PlayerInput.AddKeyEvent(MoveDown, ConsoleKey.DownArrow);
+            // Binds movement methods to wasd.
+            PlayerInput.AddKeyEvent(MoveRight, 100); // D
+            PlayerInput.AddKeyEvent(MoveLeft, 97); // A
+            PlayerInput.AddKeyEvent(MoveUp, 119); // W
+            PlayerInput.AddKeyEvent(MoveDown, 115); // S
         }
 
         // Move one space to the right.

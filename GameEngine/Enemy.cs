@@ -14,13 +14,18 @@ namespace GameEngine
         public Enemy() : this('e')
         {
 
+        }
 
+        public Enemy(string imageName) : base('e', imageName)
+        {
+            _facing = Direction.South;
+            OnUpdate += Move;
+            OnUpdate += TouchPlayer;
         }
 
         public Enemy(char icon) : base(icon)
         {
             _facing = Direction.South;
-            OnUpdate += Move;
             OnUpdate += Move;
             OnUpdate += TouchPlayer;
         }

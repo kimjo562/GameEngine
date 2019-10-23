@@ -1,13 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Raylib;
+using RL = Raylib.Raylib;
 
 namespace GameEngine
 {
     class Game
     {
+        // The tilesize of the game (px x px)
+        public static readonly int SizeX = 16;
+        public static readonly int SizeY = 16;
+        private Player player;
+        private Enemy enemy;
+
         // Whenever or not the game should finish running and exiting.
         public static bool GameOver = false;
         private static Scene _currentScene;
@@ -15,12 +24,13 @@ namespace GameEngine
         // Game Constructor
         public Game()
         {
-
+            RL.InitWindow(800, 600, "Smote");
+            RL.SetTargetFPS(10);
         }
 
         private void Initalize()
         {
-            Room startingRoom = new Room();
+            Room startingRoom = (Room)LoadEntity("startingRoom.txt");      
             Room northRoom = new Room();
             Room southRoom = new Room();
             Room eastRoom = new Room();
@@ -36,80 +46,26 @@ namespace GameEngine
             eastRoom.West = startingRoom;
             westRoom.East = startingRoom;
 
+            StartRoom();
+
             // Add Walls to the Scene
-            for (int i = 0; i < startingRoom.SizeX; i++)
+
+
+            void StartRoom()
             {
-                if (i != 5)
-                {
-                    startingRoom.AddEntity(new Wall(i, 5));
-                    startingRoom.AddEntity(new Wall(i, 4));
+                // Create a Player and position it
+                player = new Player("player.png");
+                player.X = 14;
+                player.Y = 3;
+                // Create a Enemy and position it
+                enemy = new Enemy("eEnemy.png");
+                enemy.X = 2;
+                enemy.Y = 1;
 
-                    startingRoom.AddEntity(new Wall(i, 0));
-                    startingRoom.AddEntity(new Wall(i, 7));
-
-
-                    northRoom.AddEntity(new Wall(i, 5));
-                    northRoom.AddEntity(new Wall(i, 4));
-
-                    northRoom.AddEntity(new Wall(i, 0));
-                    northRoom.AddEntity(new Wall(i, 7));
-
-
-                    southRoom.AddEntity(new Wall(i, 5));
-                    southRoom.AddEntity(new Wall(i, 4));
-
-                    southRoom.AddEntity(new Wall(i, 0));
-                    southRoom.AddEntity(new Wall(i, 7));
-
-
-                    eastRoom.AddEntity(new Wall(i, 5));
-                    eastRoom.AddEntity(new Wall(i, 4));
-
-                    eastRoom.AddEntity(new Wall(i, 0));
-                    eastRoom.AddEntity(new Wall(i, 7));
-
-
-                    westRoom.AddEntity(new Wall(i, 5));
-                    westRoom.AddEntity(new Wall(i, 4));
-
-                    westRoom.AddEntity(new Wall(i, 0));
-                    westRoom.AddEntity(new Wall(i, 7));
-                }
+                // Add Enemy and Player to the Scene
+                startingRoom.AddEntity(player);
+                startingRoom.AddEntity(enemy);
             }
-
-            for (int i = 0; i < startingRoom.SizeY; i++)
-            {
-                if (i != 2 && i != 6)
-                {
-                    startingRoom.AddEntity(new Wall(0, i));
-                    startingRoom.AddEntity(new Wall(23, i));
-
-                    northRoom.AddEntity(new Wall(0, i));
-                    northRoom.AddEntity(new Wall(23, i));
-
-                    southRoom.AddEntity(new Wall(0, i));
-                    southRoom.AddEntity(new Wall(23, i));
-
-                    eastRoom.AddEntity(new Wall(0, i));
-                    eastRoom.AddEntity(new Wall(23, i));
-
-                    westRoom.AddEntity(new Wall(0, i));
-                    westRoom.AddEntity(new Wall(23, i));
-                }
-            }
-
-            // Create a Player and position it
-            Entity player = new Player('■');
-            player.X = 3;
-            player.Y = 3;
-            // Create a Enemy and position it
-            Entity enemy = new Enemy('e');
-            enemy.X = 2;
-            enemy.Y = 1;
-
-            // Add Enemy and Player to the Scene
-            startingRoom.AddEntity(player);
-            startingRoom.AddEntity(enemy);
 
             CurrentScene = startingRoom;
         }
@@ -117,17 +73,25 @@ namespace GameEngine
         // When called from main, it should run game until it stops.
         public void Run()
         {
+            /* 
+              Press escape button to close the game.
+            PlayerInput.AddKeyEvent(ExitButton, ConsoleKey.Escape);
+            */
+
             Initalize();
 
-            PlayerInput.AddKeyEvent(ExitButton, ConsoleKey.Escape);
-
             // Loops until the game is over.
-            while (!GameOver)
+            while (!GameOver && !RL.WindowShouldClose())
             {
                 _currentScene.Update();
+
+                RL.BeginDrawing();
                 _currentScene.Draw();
+                RL.EndDrawing();
+
                 PlayerInput.ReadKey();
             }
+            RL.CloseWindow();
         }
 
         // The Scene we are currently running
@@ -143,7 +107,7 @@ namespace GameEngine
                 return _currentScene;
             }
         }
-        
+
 
         public void ExitButton()
         {
@@ -160,6 +124,86 @@ namespace GameEngine
             }
         }
 
+        private Scene LoadEntity(string path)
+        {
+            int width;
+            int height;
+            StreamReader reader = new StreamReader(path);
 
+            Int32.TryParse(reader.ReadLine(), out width);
+            Int32.TryParse(reader.ReadLine(), out height);
+            reader.Close();
+
+            Scene scene = new Room(width, height);
+            string[] lines = File.ReadAllLines(path);
+
+            int counter = 0;
+
+            foreach (string line in lines)
+            {
+                for (int i = 0; i > line.Length; i++)
+                {
+                    if(line[i] == '@')
+                    {
+                        player = new Player();
+                        scene.AddEntity(player);
+                    }
+                    if (line[i] == 'e')
+                    {
+                        enemy = new Enemy();
+                        scene.AddEntity(enemy);
+                    }
+
+                    // Finds wall
+                    if (line[i] == '0')
+                    {
+                        scene.AddEntity(new Wall(counter, i, '0', "0wall.png"));
+                    }
+                    else if (line[i] == 'O')
+                    {
+                        scene.AddEntity(new Wall(counter, i, 'O', "Owall.png"));
+                    }
+                    else if (line[i] == '1')
+                    {
+                        scene.AddEntity(new Wall(counter, i, '1', "1corner.png"));
+                    }
+                    else if (line[i] == '2')
+                    {
+                        scene.AddEntity(new Wall(counter, i, '2', "2corner.png"));
+                    }
+                    else if (line[i] == '3')
+                    {
+                        scene.AddEntity(new Wall(counter, i, '3', "3corner.png"));
+                    }
+                    else if (line[i] == '4')
+                    {
+                        scene.AddEntity(new Wall(counter, i, '4', "4corner.png"));
+                    }
+                    else if (line[i] == '5')
+                    {
+                        scene.AddEntity(new Wall(counter, i, '5', "5nub.png"));
+                    }
+                    else if (line[i] == '6')
+                    {
+                        scene.AddEntity(new Wall(counter, i, '6', "6nub.png"));
+                    }
+                    else if (line[i] == '7')
+                    {
+                        scene.AddEntity(new Wall(counter, i, '7', "7nub.png"));
+                    }
+                    else if (line[i] == '8')
+                    {
+                        scene.AddEntity(new Wall(counter, i, '8', "8nub.png"));
+                    }
+                }
+                counter++;
+            }
+
+            return scene;
+        }
     }
 }
+
+// x = 23
+// y = 10
+// map

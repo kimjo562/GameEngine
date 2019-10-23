@@ -5,7 +5,13 @@ VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameEngine", "GameEngine\GameEngine.csproj", "{C659E327-F425-49D3-B6DC-57467B3625C7}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Raylib", "Raylib\Bindings\Raylib.shproj", "{F660FF67-D70E-4AE0-9080-D922243E9B6E}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Raylib\Bindings\Raylib.projitems*{c659e327-f425-49d3-b6dc-57467b3625c7}*SharedItemsImports = 4
+		Raylib\Bindings\Raylib.projitems*{f660ff67-d70e-4ae0-9080-d922243e9b6e}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

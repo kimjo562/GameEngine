@@ -8,12 +8,18 @@ namespace GameEngine
 {
     class Wall : Entity
     {
-        public Wall(int x, int y)
+        public Wall(int x, int y) : base('0', /*file name */ "yes.png")
         {
             X = x;
             Y = y;
             Solid = true;
-            Icon = '█';
+        }
+
+        public Wall(int x, int y, char icon, string imageName) : base('0', imageName)
+        {
+            X = x;
+            Y = y;
+            Solid = true;
         }
     }
 }

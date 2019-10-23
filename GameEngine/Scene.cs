@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Raylib;
+using RL = Raylib.Raylib;
 
 namespace GameEngine
 {
@@ -16,6 +18,8 @@ namespace GameEngine
 
         // The List of all the Entities in the Scene
         private List<Entity> _entities = new List<Entity>();
+        // The list of the 
+        private List<Entity> _removal = new List<Entity>();
         //The Size of the Scene
         private int _sizeX;
         private int _sizeY;
@@ -86,11 +90,16 @@ namespace GameEngine
 
             }
   
+            foreach (Entity e in _removal)
+            {
+                // Remove e from _entities
+                _entities.Remove(e);
+            }
+            _removal.Clear();
+
             // Clears the collision grid
             foreach (Entity e in _entities)
             {
-                // Call the Entity's Update events
-                e.Update();
                 // Set the Entity's collision in the collision grid
                 int x = (int)e.X;
                 int y = (int)e.Y;
@@ -106,6 +115,13 @@ namespace GameEngine
                 }
 
             }
+
+            foreach (Entity e in _entities)
+            {
+                //Call the Entity's Update events
+                e.Update();
+            }
+
         }
 
         // Called in game every step to render each Entitiy in game
@@ -115,13 +131,13 @@ namespace GameEngine
 
             // Clear the screen.
             Console.Clear();
+            RL.ClearBackground(Color.BLACK);
 
             // Length = size of the screen.
             char[,] display = new char[_sizeX, _sizeY];
 
             foreach (Entity e in _entities)
             {
-                e.Draw();
                 // Position each Entity's icon in the display.
                 if (e.X >= 0 && e.X < _sizeX && e.Y >= 0 && e.Y < _sizeY)
                 {
@@ -129,14 +145,26 @@ namespace GameEngine
                 }
             }
 
+            // Render the display grid to the screen.
             for (int i = 0; i < _sizeY; i++)
             {
                 for (int j = 0; j < _sizeX; j++)
                 {
                     Console.Write(display[j, i]);
+                    foreach (Entity e in _tracking [j, i])
+                    {
+                        RL.DrawTexture(e.Sprite, j * Game.SizeX, i * Game.SizeY, Color.PURPLE);
+                    }
                 }
                 Console.WriteLine();
             }
+
+            foreach (Entity e in _entities)
+            {
+                //Call the Entity's Update events
+                e.Draw();
+            }
+
             //            Console.Write("Say Oi Boi: " + counter);
         }
 
@@ -148,18 +176,18 @@ namespace GameEngine
 
         public void RemoveEntity(Entity entity)
         {
-            _entities.Remove(entity);
+            _removal.Add(entity);
             entity.CurrentScene = null;
         }
 
         // Clear the Scene of Entity
         public void ClearEntities()
         {
+            // Nullify each Entity's Scene
             foreach (Entity e in _entities)
             {
-                e.CurrentScene = null;
+                RemoveEntity(e);
             }
-            _entities.Clear();
         }
 
         // Returns whether there is a solid Entity at the point.
@@ -185,7 +213,7 @@ namespace GameEngine
             {
                 return _tracking[(int)x, (int)y];
             }
-            // A point outside the SCene is not a collision
+            // A point outside the Scene is not a collision
             else
             {
                 return new List<Entity>();
