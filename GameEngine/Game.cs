@@ -19,14 +19,24 @@ namespace GameEngine
 
         // Whenever or not the game should finish running and exiting.
         public static bool GameOver = false;
+        // The Scene we are currently running
         private static Scene _currentScene;
+        // The Scene we are about to go to
         private static Scene _nextScene;
+        // The Camera for the 3d View
+        private Camera3D _camera;
 
         // Game Constructor
         public Game()
         {
-            RL.InitWindow(800, 600, "Smote");
-            RL.SetTargetFPS(10);
+            RL.InitWindow(800, 400, "Smote");
+            RL.SetTargetFPS(15);
+
+/*            Raylib.Vector3 cameraPosition = new Raylib.Vector3(-10, -10, -10);
+            Raylib.Vector3 cameraTarget = new Raylib.Vector3(0, 0, 0);
+            Raylib.Vector3 cameraUp = new Raylib.Vector3(0, 0, -1);
+
+            _camera = new Camera3D(cameraPosition, cameraTarget, cameraUp);  */
         }
 
         private void Initalize()
@@ -74,9 +84,18 @@ namespace GameEngine
                 // Update the Active Scene
                 _currentScene.Update();
 
+                /*  Raylib.Vector3 cameraPosition = new Raylib.Vector3(player.X , player.Y + 250, -250);
+                 Raylib.Vector3 cameraTarget = new Raylib.Vector3(player.X + 300, player.Y + 50, 75);
+                 Raylib.Vector3 cameraUp = new Raylib.Vector3(-0.5f, 0f, -0.7f); 
+
+                 _camera = new Camera3D(cameraPosition, cameraTarget, cameraUp);  */
+
+
                 // Draw the Active Scene
                 RL.BeginDrawing();
+             //   RL.BeginMode3D(_camera);
                 _currentScene.Draw();
+             //   RL.EndMode3D();
                 RL.EndDrawing();
 
             }
