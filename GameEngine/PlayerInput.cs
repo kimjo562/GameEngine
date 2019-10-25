@@ -9,12 +9,12 @@ using RL = Raylib.Raylib;
 namespace GameEngine
 {
     // [static] Unable to call instance of it, just only that it exists to do things.
-    static class PlayerInput
+    class PlayerInput
     {
         private delegate void KeyEvent(int key);
 
-        private static KeyEvent OnKeyPress;
-        public static void AddKeyEvent(Event action, int key)
+        private KeyEvent OnKeyPress;
+        public void AddKeyEvent(Event action, int key)
         {
             void keyPressed(int keyPress)
             {
@@ -26,7 +26,7 @@ namespace GameEngine
             OnKeyPress += keyPressed;
         }
 
-        public static void ReadKey()
+        public void InputDevice()
         {
             // ConsoleKey inputKey = Console.ReadKey().Key;
             int inputKey = RL.GetKeyPressed();
