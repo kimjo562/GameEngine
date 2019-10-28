@@ -17,7 +17,10 @@ namespace GameEngine
         public Event OnUpdate;
         public Event OnDraw;
 
+        // The Location of the Entity
         private Vector2 _location = new Vector2();
+        // The Velocity of th Entity
+        private Vector2 _velocity = new Vector2();
 
         // The Character representing the Entity on the screen
         public char Icon { get; set; } = ' ';
@@ -49,8 +52,33 @@ namespace GameEngine
             }
         }
 
-        private Scene _scene;
+        // The Entity's velocity on the X Axis
+        public float XVelocity
+        {
+            get
+            {
+                return _velocity.x;
+            }
+            set
+            {
+                _velocity.x = value;
+            }
+        }
 
+        // The Entity's velocity on the Y Axis
+        public float YVelocity
+        {
+            get
+            {
+                return _velocity.y;
+            }
+            set
+            {
+                _velocity.y = value;
+            }
+        }
+
+        private Scene _scene;
         public Scene CurrentScene
         {
             set
@@ -81,17 +109,21 @@ namespace GameEngine
             Sprite = RL.LoadTexture(imageName);
         }
 
+        // Call the Entity's OnStart event
         public void Start()
         {
             // Checks to see if the Delegate has something in it.
             OnStart?.Invoke();
         }
 
+        // Call the Entity's OnUpdate event
         public void Update()
         {
+            _location += _velocity;
             OnUpdate?.Invoke();
         }
 
+        // Call the Entity's OnDraw event
         public void Draw()
         {
             OnDraw?.Invoke();

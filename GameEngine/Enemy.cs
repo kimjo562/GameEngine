@@ -11,6 +11,8 @@ namespace GameEngine
         Random random = new Random();
         private Direction _facing;
 
+        public float Speed { get; set; } = .15f;
+
         public Enemy() : this('e')
         {
 
@@ -52,22 +54,22 @@ namespace GameEngine
 
         private void Move()
         {
-            int direction = random.Next(0, 4);
-            switch (direction)
+           // int direction = random.Next(0, 4);
+            switch (_facing)
             {
-                case 0:
+                case Direction.North:
                     MoveUp();
                     break;
 
-                case 1:
+                case Direction.South:
                     MoveDown();
                     break;
 
-                case 2:
+                case Direction.East:
                     MoveRight();
                     break;
 
-                case 3:
+                case Direction.West:
                     MoveLeft();
                     break;
             }
@@ -76,48 +78,60 @@ namespace GameEngine
 
         private void MoveUp()
         {
+            // Move Up if the space is clear
             if (!CurrentScene.GetCollision(X, Y - 1))
             {
-                Y--;
+                YVelocity = -Speed;
             }
+            // Otherwise stop and change direction
             else
             {
+                YVelocity = 0f;
                 _facing++;
             }
         }
 
         private void MoveDown()
         {
+            // Move Down if the space is clear
             if (!CurrentScene.GetCollision(X, Y + 1))
             {
-                Y++;
+                YVelocity = Speed;
             }
+            // Otherwise stop and change direction
             else
             {
+                YVelocity = 0f;
                 _facing++;
             }
         }
 
         private void MoveRight()
         {
+            // Move Right if the space is clear
             if (!CurrentScene.GetCollision(X + 1, Y))
             {
-                X++;
+                XVelocity = Speed;
             }
+            // Otherwise stop and change direction
             else
             {
+                XVelocity = 0f;
                 _facing++;
             }
         }
 
         private void MoveLeft()
         {
+            // Move Left if the space is clear
             if (!CurrentScene.GetCollision(X - 1, Y))
             {
-                X--;
+                XVelocity = -Speed;
             }
+            // Otherwise stop and change direction
             else
             {
+                XVelocity = 0f;
                 _facing = 0;
             }
         }

@@ -11,15 +11,17 @@ namespace GameEngine
 {
     class Scene
     {
-        // The List of all the Entities in the Scene
+        // Events that are called when the scene is Started, Updated and Drawn.
         public Event OnStart;
         public Event OnUpdate;
         public Event OnDraw;
 
         // The List of all the Entities in the Scene
         private List<Entity> _entities = new List<Entity>();
-        // The list of the 
-        private List<Entity> _removal = new List<Entity>();
+        // The list of Entities to add from the Scene
+        private List<Entity> _additions = new List<Entity>();
+        // The list of Entities to remove from the Scene
+        private List<Entity> _removals = new List<Entity>();
         //The Size of the Scene
         private int _sizeX;
         private int _sizeY;
@@ -90,12 +92,20 @@ namespace GameEngine
 
             }
   
-            foreach (Entity e in _removal)
+            // Add all the Entities readied for addition
+            foreach(Entity e in _additions)
+            {
+                // Add e to _entities
+                _entities.Add(e);
+            }
+            _additions.Clear();
+
+            foreach (Entity e in _removals)
             {
                 // Remove e from _entities
                 _entities.Remove(e);
             }
-            _removal.Clear();
+            _removals.Clear();
 
             // Clears the collision grid
             foreach (Entity e in _entities)
@@ -153,7 +163,7 @@ namespace GameEngine
                     Console.Write(display[j, i]);
                     foreach (Entity e in _tracking [j, i])
                     {
-                        RL.DrawTexture(e.Sprite, j * Game.SizeX, i * Game.SizeY, Color.PURPLE);
+                        RL.DrawTexture(e.Sprite, (int)(e.X * Game.SizeX), (int)(e.Y * Game.SizeY), Color.PURPLE);
                     }
                 }
                 Console.WriteLine();
@@ -170,17 +180,21 @@ namespace GameEngine
 
         public void AddEntity(Entity entity)
         {
-            _entities.Add(entity);
+            // Ready the Tntity for addition
+            _additions.Add(entity);
+            // Set this Scene as the Entity's Scene
             entity.CurrentScene = this;
         }
 
         public void RemoveEntity(Entity entity)
         {
-            _removal.Add(entity);
+            // Ready the Entity for removal
+            _removals.Add(entity);
+            // Nullify the Entity's Scene
             entity.CurrentScene = null;
         }
 
-        // Clear the Scene of Entity
+        // Clear the Scene of Entities and nullify their Scenes
         public void ClearEntities()
         {
             // Nullify each Entity's Scene

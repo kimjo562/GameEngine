@@ -19,9 +19,9 @@ namespace GameEngine
 
         public Vector3(float x, float y, float z)
         {
-            this.x = 0;
-            this.y = 0;
-            this.z = 0;
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
 
         public static Vector3 operator +(Vector3 _vec1, Vector3 _vec2)
@@ -54,6 +54,37 @@ namespace GameEngine
             return new Vector3((number / _vec1.x), (number / _vec1.y ), (number / _vec1.z));
         }
 
+        public float Magnitude()
+        {
+            return (float)Math.Sqrt((x * x) + (y * y) + (z * z));
+        }
+
+        public float MagnitudeSqr()
+        {
+            return (x * x) + (y * y) + (z * z);
+        }
+
+        public float Distance(Vector3 other)
+        {
+            float diffX = x - other.x;
+            float diffY = y - other.y;
+            float diffZ = z - other.z;
+            return (float)Math.Sqrt(diffX * diffX + diffY * +diffY + diffZ * diffZ);
+        }
+
+        // Makes the Vector unit length meaning its Magnitude is 1.
+        public void Normalize()
+        {
+            float m = Magnitude();
+            this.x /= m;
+            this.y /= m;
+            this.z /= m;
+        }
+
+        public Vector3 GetNormalised()
+        {
+            return (this / Magnitude());
+        }
 
     }
 }

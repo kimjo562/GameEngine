@@ -18,8 +18,8 @@ namespace GameEngine
 
         public Vector2(float x, float y)
         {
-            this.x = 0;
-            this.y = 0;
+            this.x = x;
+            this.y = y;
         }
 
         // Vector2 + Vector2
@@ -57,5 +57,23 @@ namespace GameEngine
         {
             return new Vector2((number / _vec1.x ), (number / _vec1.y));
         }
+
+        public float Magnitude()
+        {
+            return (float)Math.Sqrt((x * x) + (y * y));
+        }
+
+        public float MagnitudeSqr()
+        {
+            return (x * x) + (y * y);
+        }
+
+        public float Distance(Vector2 other)
+        {
+            float diffX = x - other.x;
+            float diffY = y - other.y;
+            return (float)Math.Sqrt(diffX * diffX + diffY * +diffY);
+        }
+
     }
 }
