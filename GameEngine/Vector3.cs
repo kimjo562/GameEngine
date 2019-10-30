@@ -51,19 +51,22 @@ namespace GameEngine
 
         public static Vector3 operator /(Vector3 _vec1, float number)
         {
-            return new Vector3((number / _vec1.x), (number / _vec1.y ), (number / _vec1.z));
+            return new Vector3((number / _vec1.x), (number / _vec1.y), (number / _vec1.z));
         }
 
+        // Returns the magnitude of Vector3
         public float Magnitude()
         {
             return (float)Math.Sqrt((x * x) + (y * y) + (z * z));
         }
 
+        // Returns the sqaure of the magnitude of Vector3
         public float MagnitudeSqr()
         {
             return (x * x) + (y * y) + (z * z);
         }
 
+        // Return the distance between this Vectoe3 and another
         public float Distance(Vector3 other)
         {
             float diffX = x - other.x;
@@ -76,14 +79,39 @@ namespace GameEngine
         public void Normalize()
         {
             float m = Magnitude();
-            this.x /= m;
-            this.y /= m;
-            this.z /= m;
+            x /= m;
+            y /= m;
+            z /= m;
         }
 
         public Vector3 GetNormalised()
         {
             return (this / Magnitude());
+        }
+
+        public float DotProduct(Vector3 other)
+        {
+            return x * other.x + y * other.y + z * other.z;
+        }
+
+        public Vector3 CrossProduct(Vector3 other)
+        {
+            return new Vector3((y * other.z - z * other.y), (z * other.x - x * other.z), (x * other.y - y * other.x));
+        }
+
+        public float GetAngle(Vector3 other)
+        {
+            // normalise the vectors
+            Vector3 a = GetNormalised();
+            Vector3 b = other.GetNormalised();
+
+            // return the angle between them
+            return (float)Math.Acos(a.DotProduct(b));
+        }
+
+        public override string ToString()
+        {
+            return "{ " + x + ", " + y + ", " + z + " }";
         }
 
     }

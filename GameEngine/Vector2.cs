@@ -68,11 +68,53 @@ namespace GameEngine
             return (x * x) + (y * y);
         }
 
+        public void Normalize()
+        {
+            float m = Magnitude();
+            this.x /= m;
+            this.y /= m;
+        }
+
+        public Vector2 GetNormalised()
+        {
+            return (this / Magnitude());
+        }
+
         public float Distance(Vector2 other)
         {
             float diffX = x - other.x;
             float diffY = y - other.y;
             return (float)Math.Sqrt(diffX * diffX + diffY * +diffY);
+        }
+
+        public float DotProduct(Vector2 other)
+        {
+            return (x * other.x) + (y * other.y);
+        }
+
+        public Vector2 GetPerpRH()
+        {
+            return new Vector2 (-y, x);
+        }
+
+        public Vector2 GetPerpLH()
+        {
+            return new Vector2(-x, y);
+        }
+
+        public float GetAngle(Vector2 other)
+        {
+            // normalise the vectors
+            Vector2 a = GetNormalised();
+            Vector2 b = other.GetNormalised();
+
+            // return the angle between them
+            return (float)Math.Acos(a.DotProduct(b));
+        }
+
+        public override string ToString()
+        {
+            return "{ " + x + ", " + y + " }";
         }
 
     }

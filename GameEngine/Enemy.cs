@@ -11,7 +11,7 @@ namespace GameEngine
         Random random = new Random();
         private Direction _facing;
 
-        public float Speed { get; set; } = .15f;
+        public float Speed { get; set; } = .1f;
 
         public Enemy() : this('e')
         {

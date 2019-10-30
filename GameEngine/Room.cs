@@ -14,7 +14,6 @@ namespace GameEngine
         West,
     }
 
-
     class Room : Scene
     {
         // Rooms connnected to this one
