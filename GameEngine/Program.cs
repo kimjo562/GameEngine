@@ -18,6 +18,15 @@ namespace GameEngine
             game.Run();
         }
 
+        static void MatrixTest()
+        {
+            Matrix3 a = new Matrix3(1, 4, 7, 2, 5, 8, 3, 6, 9);
+            Matrix3 b = new Matrix3(9, 6, 3, 8, 5, 2, 7, 4, 1);
+            Matrix3 c = a * b;
+            Console.WriteLine(c);
+
+            // Some other stuff here.
+        }
 
         static void Examples()
         {
@@ -80,6 +89,15 @@ namespace GameEngine
             {
                 Console.WriteLine("I see you boi.");
             }
+
+            Console.WriteLine(new Matrix3(1, 4, 7, 2, 5, 8, 3, 6, 9) * new Matrix3(9, 6, 3, 8, 5, 2, 7, 4, 1));
+            Console.WriteLine(" ");
+            Console.WriteLine(new Matrix3(90, 54, 18, 114, 69, 24, 138, 84, 30) * new Vector3(2, 4, 6));
+            Console.WriteLine(" ");
+            Console.WriteLine(" ");
+            Console.WriteLine(new Matrix2(1, 4, 7, 2) * new Matrix2(9, 6, 3, 8));
+            Console.WriteLine(" ");
+            Console.WriteLine(new Matrix2(90, 54, 18, 114) * new Vector2(2, 4));
 
             Console.ReadKey();
         }

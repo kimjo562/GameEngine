@@ -163,7 +163,12 @@ namespace GameEngine
                     Console.Write(display[j, i]);
                     foreach (Entity e in _tracking [j, i])
                     {
-                        RL.DrawTexture(e.Sprite, (int)(e.X * Game.SizeX), (int)(e.Y * Game.SizeY), Color.PURPLE);
+                     //   RL.DrawTexture(e.Sprite, (int)(e.X * Game.SizeX), (int)(e.Y * Game.SizeY), Color.PURPLE);
+                        Texture2D texture = e.Sprite;
+                        Raylib.Vector2 position = new Raylib.Vector2(e.X * Game.SizeX, e.Y * Game.SizeY);
+                        float rotation = 0.0f;
+                        float scale = e.Scale;
+                        RL.DrawTextureEx(texture, position, rotation, scale, Color.PURPLE);
                     }
                 }
                 Console.WriteLine();

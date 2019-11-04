@@ -42,5 +42,12 @@ namespace GameEngine
             return new Vector2((lhs.m1x1 * rhs.x) + (lhs.m1x2 * rhs.y),
                                (lhs.m2x1 * rhs.x) + (lhs.m2x2 * rhs.y));
         }
+
+        public override string ToString()
+        {
+            return "{ " + m1x1 + ", " + m1x2 + "\n "
+                        + m2x1 + ", " + m2x2 + " }";
+
+        }
     }
 }

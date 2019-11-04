@@ -18,9 +18,14 @@ namespace GameEngine
         public Event OnDraw;
 
         // The Location of the Entity
-        private Vector2 _location = new Vector2();
-        // The Velocity of th Entity
-        private Vector2 _velocity = new Vector2();
+        private Vector3 _location = new Vector3(0, 0, 1);
+        // The Velocity of the Entity
+        // private Vector2 _velocity = new Vector2();
+        // private Matrix3 _transform = new Matrix3();
+        private Matrix3 _translation = new Matrix3();
+        private Matrix3 _rotation = new Matrix3();
+        // private Matrix3 _scale = new Matrix3();
+        private float _scale = 1.0f;
 
         // The Character representing the Entity on the screen
         public char Icon { get; set; } = ' ';
@@ -57,11 +62,13 @@ namespace GameEngine
         {
             get
             {
-                return _velocity.x;
+                // return _velocity.x;
+                return _translation.m1x3;
             }
             set
             {
-                _velocity.x = value;
+               // _velocity.x = value;
+               _translation.SetTranslation(value, YVelocity, 1);
             }
         }
 
@@ -70,11 +77,27 @@ namespace GameEngine
         {
             get
             {
-                return _velocity.y;
+                // return _velocity.y;
+                return _translation.m2x3;
             }
             set
             {
-                _velocity.y = value;
+                // _velocity.y = value;
+                _translation.SetTranslation(XVelocity, value, 1);
+            }
+        }
+
+        // The Entity's scale
+        public float Scale
+        {
+            get
+            {
+                return _scale;
+            }
+            set
+            {
+                // _scale.SetScaled(value, value, 1);
+                _scale = value;
             }
         }
 
@@ -119,7 +142,9 @@ namespace GameEngine
         // Call the Entity's OnUpdate event
         public void Update()
         {
-            _location += _velocity;
+            // _location += _velocity;
+             Matrix3 transform = _translation * _rotation;
+            _location = transform * _location;
             OnUpdate?.Invoke();
         }
 

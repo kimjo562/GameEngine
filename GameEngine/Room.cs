@@ -9,9 +9,9 @@ namespace GameEngine
     enum Direction
     {
         North,
-        South,
         East,
-        West,
+        South,
+        West
     }
 
     class Room : Scene

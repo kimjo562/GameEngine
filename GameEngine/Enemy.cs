@@ -8,7 +8,6 @@ namespace GameEngine
 {
     class Enemy : Entity
     {
-        Random random = new Random();
         private Direction _facing;
 
         public float Speed { get; set; } = .1f;
@@ -20,16 +19,18 @@ namespace GameEngine
 
         public Enemy(string imageName) : base('e', imageName)
         {
-            _facing = Direction.South;
+            _facing = Direction.North;
             OnUpdate += Move;
             OnUpdate += TouchPlayer;
+            Scale = 2.0f;
         }
 
         public Enemy(char icon) : base(icon)
         {
-            _facing = Direction.South;
+            _facing = Direction.North;
             OnUpdate += Move;
             OnUpdate += TouchPlayer;
+            Scale = 2.0f;
         }
 
         private void TouchPlayer()
@@ -54,7 +55,6 @@ namespace GameEngine
 
         private void Move()
         {
-           // int direction = random.Next(0, 4);
             switch (_facing)
             {
                 case Direction.North:
@@ -79,9 +79,9 @@ namespace GameEngine
         private void MoveUp()
         {
             // Move Up if the space is clear
-            if (!CurrentScene.GetCollision(X, Y - 1))
+            if (!CurrentScene.GetCollision(X, Y - Speed))
             {
-                YVelocity = -Speed;
+                YVelocity =- Speed;
             }
             // Otherwise stop and change direction
             else
@@ -124,9 +124,9 @@ namespace GameEngine
         private void MoveLeft()
         {
             // Move Left if the space is clear
-            if (!CurrentScene.GetCollision(X - 1, Y))
+            if (!CurrentScene.GetCollision(X - Speed, Y))
             {
-                XVelocity = -Speed;
+                XVelocity =- Speed;
             }
             // Otherwise stop and change direction
             else
