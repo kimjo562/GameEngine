@@ -111,9 +111,9 @@ namespace GameEngine
             foreach (Entity e in _entities)
             {
                 // Set the Entity's collision in the collision grid
-                int x = (int)e.X;
-                int y = (int)e.Y;
-                if(e.X >= 0 && e.X < _sizeX && e.Y >= 0 && e.Y < _sizeY)
+                int x = (int)e.XAbsolute;
+                int y = (int)e.YAbsolute;
+                if(e.XAbsolute >= 0 && e.XAbsolute < _sizeX && e.YAbsolute >= 0 && e.YAbsolute < _sizeY)
                 {
                     // Add the Entity to the tracking grid
                     _tracking[x, y].Add(e);
@@ -149,9 +149,9 @@ namespace GameEngine
             foreach (Entity e in _entities)
             {
                 // Position each Entity's icon in the display.
-                if (e.X >= 0 && e.X < _sizeX && e.Y >= 0 && e.Y < _sizeY)
+                if (e.XAbsolute >= 0 && e.XAbsolute < _sizeX && e.YAbsolute >= 0 && e.YAbsolute < _sizeY)
                 {
-                    display[(int)e.X, (int)e.Y] = e.Icon;
+                    display[(int)e.XAbsolute, (int)e.YAbsolute] = e.Icon;
                 }
             }
 
@@ -165,9 +165,9 @@ namespace GameEngine
                     {
                      //   RL.DrawTexture(e.Sprite, (int)(e.X * Game.SizeX), (int)(e.Y * Game.SizeY), Color.PURPLE);
                         Texture2D texture = e.Sprite;
-                        Raylib.Vector2 position = new Raylib.Vector2(e.X * Game.SizeX, e.Y * Game.SizeY);
-                        float rotation = 0.0f;
-                        float scale = e.Scale;
+                        Raylib.Vector2 position = new Raylib.Vector2(e.XAbsolute * Game.SizeX - e.OriginX, e.YAbsolute * Game.SizeY - e.OriginY);
+                        float rotation = e.Rotation * (float)(180.0f/Math.PI);
+                        float scale = e.Size;
                         RL.DrawTextureEx(texture, position, rotation, scale, Color.PURPLE);
                     }
                 }

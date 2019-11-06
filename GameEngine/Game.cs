@@ -24,13 +24,13 @@ namespace GameEngine
         // The Scene we are about to go to
         private static Scene _nextScene;
         // The Camera for the 3d View
-        private Camera3D _camera;
+        // private Camera3D _camera;
 
         // Game Constructor
         public Game()
         {
             RL.InitWindow(800, 400, "Smote");
-            RL.SetTargetFPS(15);
+            RL.SetTargetFPS(25);
 
 /*            Raylib.Vector3 cameraPosition = new Raylib.Vector3(-10, -10, -10);
             Raylib.Vector3 cameraTarget = new Raylib.Vector3(0, 0, 0);
@@ -154,6 +154,11 @@ namespace GameEngine
                             room.AddEntity(player);
                             player.X = 21;
                             player.Y = 3;
+                            Entity sword = new Entity('/', "sword.png");
+                            player.AddChild(sword);
+                            sword.X += 0.5f;
+                            sword.Y += 0.5f;
+                            room.AddEntity(sword);
                             break;
 
                         case 'e':

@@ -12,6 +12,8 @@ namespace GameEngine
         {
             X = x;
             Y = y;
+            //OriginX = 7.5f;
+            //OriginY = 8f;
             Solid = true;
         }
 
@@ -19,7 +21,15 @@ namespace GameEngine
         {
             X = x;
             Y = y;
+            //OriginX = 7.5f;
+            //OriginY = 8f;
             Solid = true;
+           // OnUpdate += SPIN;
+        }
+
+        void SPIN()
+        {
+            Rotate(-0.01f);
         }
     }
 }

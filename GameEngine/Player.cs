@@ -18,6 +18,7 @@ namespace GameEngine
         public Player(string imageName) : base('@', imageName)
         {
             OnUpdate += _input.InputDevice;
+            OnUpdate += Orbit;
 
             // Binds movement methods to wasd.
             _input.AddKeyEvent(MoveRight, 100); // D
@@ -30,12 +31,21 @@ namespace GameEngine
         public Player(char icon) : base(icon)
         {
             OnUpdate += _input.InputDevice;
+            OnUpdate += Orbit;
 
             // Binds movement methods to wasd.
             _input.AddKeyEvent(MoveRight, 100); // D
             _input.AddKeyEvent(MoveLeft, 97); // A
             _input.AddKeyEvent(MoveUp, 119); // W
             _input.AddKeyEvent(MoveDown, 115); // S
+        }
+
+        private void Orbit()
+        {
+            foreach (Entity child in _children)
+            {
+                child.Rotate(-1f);
+            }
         }
 
         // Move one space to the right.

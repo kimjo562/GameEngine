@@ -22,7 +22,7 @@ namespace GameEngine
             _facing = Direction.North;
             OnUpdate += Move;
             OnUpdate += TouchPlayer;
-            Scale = 2.0f;
+            // Scale = 2.0f;
         }
 
         public Enemy(char icon) : base(icon)
@@ -30,7 +30,7 @@ namespace GameEngine
             _facing = Direction.North;
             OnUpdate += Move;
             OnUpdate += TouchPlayer;
-            Scale = 2.0f;
+            // Scale = 2.0f;
         }
 
         private void TouchPlayer()
