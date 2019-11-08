@@ -44,8 +44,9 @@ namespace GameEngine
         {
             foreach (Entity child in _children)
             {
-                child.Rotate(-1f);
+                child.Rotate(-0.5f);
             }
+            // Rotate(0.1f);
         }
 
         // Move one space to the right.
