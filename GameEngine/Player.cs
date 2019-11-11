@@ -8,7 +8,9 @@ namespace GameEngine
 {
     class Player : Entity
     {
-        private PlayerInput _input = new PlayerInput();        
+        private PlayerInput _input = new PlayerInput();
+        private Entity _sword = new Entity('/', "sword.png");
+
         // Instead of using base we can use this (which will "this" will go to icon and to the "base" icon and goes through all the constuctors).
         public Player() : this('@')
         {
@@ -19,6 +21,8 @@ namespace GameEngine
         {
             OnUpdate += _input.InputDevice;
             OnUpdate += Orbit;
+            OnStart += CreateSword;
+            OnStart += AttachSword;
 
             // Binds movement methods to wasd.
             _input.AddKeyEvent(MoveRight, 100); // D
@@ -46,7 +50,21 @@ namespace GameEngine
             {
                 child.Rotate(-0.5f);
             }
-            // Rotate(0.1f);
+             Rotate(0.1f);
+        }
+
+        //Create and add a sword to the scene
+        private void CreateSword()
+        {
+            CurrentScene.AddEntity(_sword);
+        }
+
+        // Add sword as a child
+        private void AttachSword()
+        {
+            AddChild(_sword);
+            _sword.X = 1f;
+            _sword.Y = 0.5f;
         }
 
         // Move one space to the right.

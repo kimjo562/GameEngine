@@ -8,7 +8,7 @@ namespace GameEngine
 {
     class Wall : Entity
     {
-        public Wall(int x, int y) : base('0', /*file name */ "yes.png")
+        public Wall(int x, int y) : base('█', /*file name */ "yes.png")
         {
             X = x;
             Y = y;
@@ -17,14 +17,14 @@ namespace GameEngine
             Solid = true;
         }
 
-        public Wall(int x, int y, char icon, string imageName) : base('0', imageName)
+        public Wall(int x, int y, char icon, string imageName) : base('█', imageName)
         {
             X = x;
             Y = y;
             //OriginX = 7.5f;
             //OriginY = 8f;
             Solid = true;
-           // OnUpdate += SPIN;
+            // OnUpdate += SPIN;
         }
 
         void SPIN()

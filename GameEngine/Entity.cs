@@ -210,7 +210,10 @@ namespace GameEngine
         public void AddChild(Entity child)
         {
             // Make sure the child already have a parent
-            Debug.Assert(child._parent == null);
+            if(child != null && child._parent != null)
+            {
+                return;
+            }
             // Assign this Entity as the child's parent
             child._parent = this;
             // Add new child to collection

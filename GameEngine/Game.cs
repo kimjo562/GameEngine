@@ -12,8 +12,9 @@ namespace GameEngine
     class Game
     {
         // The tilesize of the game (px x px)
-        public static readonly int SizeX = 15;
-        public static readonly int SizeY = 16;
+        public static readonly Vector2 UnitSize = new Vector2(15, 16);
+        // public static readonly int UnitSizeX = 15;
+        // public static readonly int UnitSizeY = 16;
         private Player player;
         private Enemy enemy;
 
@@ -24,13 +25,13 @@ namespace GameEngine
         // The Scene we are about to go to
         private static Scene _nextScene;
         // The Camera for the 3d View
-        // private Camera3D _camera;
+         private Camera3D _camera;
 
         // Game Constructor
         public Game()
         {
             RL.InitWindow(800, 400, "Smote");
-            RL.SetTargetFPS(25);
+            RL.SetTargetFPS(30);
 
 /*            Raylib.Vector3 cameraPosition = new Raylib.Vector3(-10, -10, -10);
             Raylib.Vector3 cameraTarget = new Raylib.Vector3(0, 0, 0);
@@ -78,19 +79,17 @@ namespace GameEngine
                 if(_currentScene != _nextScene)
                 {
                     _currentScene = _nextScene;
-                    _currentScene.Start();
                 }
 
+                
                 // Update the Active Scene
                 _currentScene.Update();
 
-                /*  Raylib.Vector3 cameraPosition = new Raylib.Vector3(player.X , player.Y + 250, -250);
-                 Raylib.Vector3 cameraTarget = new Raylib.Vector3(player.X + 300, player.Y + 50, 75);
-                 Raylib.Vector3 cameraUp = new Raylib.Vector3(-0.5f, 0f, -0.7f); 
-
-                 _camera = new Camera3D(cameraPosition, cameraTarget, cameraUp);  */
-
-
+                // Start the Scene if needed
+                if(!_currentScene.Started)
+                {
+                    _currentScene.Start();
+                }
                 // Draw the Active Scene
                 RL.BeginDrawing();
              //   RL.BeginMode3D(_camera);
@@ -152,20 +151,23 @@ namespace GameEngine
                         case '@':
                             player = new Player("player.png");
                             room.AddEntity(player);
-                            player.X = 21;
-                            player.Y = 3;
-                            Entity sword = new Entity('/', "sword.png");
-                            player.AddChild(sword);
-                            sword.X += 0.5f;
-                            sword.Y += 0.5f;
-                            room.AddEntity(sword);
+                            player.X = x;
+                            player.Y = y;
+                            // player.Sprite.X -= 0f;
+                            // player.Sprite.Y -= 0f;
+
+                            //Entity sword = new Entity('/', "sword.png");
+                            //player.AddChild(sword);
+                            //sword.Sprite.X += 1f;
+                            //// sword.Sprite.Y += 0.5f;
+                            //room.AddEntity(sword);
                             break;
 
                         case 'e':
                             enemy = new Enemy("eEnemy.png");
                             room.AddEntity(enemy);
-                            enemy.X = 3;
-                            enemy.Y = 5;
+                            enemy.X = x;
+                            enemy.Y = y;
                             break;
 
                         case '0':

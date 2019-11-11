@@ -18,14 +18,34 @@ namespace GameEngine
 
         }
 
+        public float Top
+        {   // Wall Displacement and px affect location of enemy entity (px 16 + wall Displace)
+            get { return YAbsolute + 0.5f; }
+        }
+
+        public float Bottom
+        {   // Wall Displacement and px affect location of enemy entity (px 16 + wall Displace)
+            get { return YAbsolute + Height + 0.4f; }
+        }
+
+        public float Left
+        {   // Wall Displacement and px affect location of enemy entity (px 15 + wall Displace)
+            get { return XAbsolute + 0.7f; }
+        }
+
+        public float Right
+        {   // Wall Displacement and px affect location of enemy entity (px 15 + wall Displace)
+            get { return XAbsolute + Width + 0.4f; }
+        }
+
         public float Width
         {
-            get { return _texture.width; }
+            get { return _texture.width / Game.UnitSize.x; }
         }
 
         public float Height
         {
-            get { return _texture.height; }
+            get { return _texture.height / Game.UnitSize.y; }
         }
 
         public Texture2D Texture
@@ -37,6 +57,8 @@ namespace GameEngine
         {
             _image = RL.LoadImage(path);
             _texture = RL.LoadTextureFromImage(_image);
+            X = -Width / 2;
+            Y = -Height / 2;
         }
     }
 }

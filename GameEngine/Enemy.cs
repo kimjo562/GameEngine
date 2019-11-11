@@ -10,7 +10,7 @@ namespace GameEngine
     {
         private Direction _facing;
 
-        public float Speed { get; set; } = .1f;
+        public float Speed { get; set; } = 0.25f;
 
         public Enemy() : this('e')
         {
@@ -79,7 +79,7 @@ namespace GameEngine
         private void MoveUp()
         {
             // Move Up if the space is clear
-            if (!CurrentScene.GetCollision(X, Y - Speed))
+            if (!CurrentScene.GetCollision(XAbsolute, Sprite.Top - Speed))
             {
                 YVelocity =- Speed;
             }
@@ -94,7 +94,7 @@ namespace GameEngine
         private void MoveDown()
         {
             // Move Down if the space is clear
-            if (!CurrentScene.GetCollision(X, Y + 1))
+            if (!CurrentScene.GetCollision(XAbsolute, Sprite.Bottom + Speed))
             {
                 YVelocity = Speed;
             }
@@ -109,7 +109,7 @@ namespace GameEngine
         private void MoveRight()
         {
             // Move Right if the space is clear
-            if (!CurrentScene.GetCollision(X + 1, Y))
+            if (!CurrentScene.GetCollision(Sprite.Right + Speed, YAbsolute))
             {
                 XVelocity = Speed;
             }
@@ -124,7 +124,7 @@ namespace GameEngine
         private void MoveLeft()
         {
             // Move Left if the space is clear
-            if (!CurrentScene.GetCollision(X - Speed, Y))
+            if (!CurrentScene.GetCollision(Sprite.Left - Speed, YAbsolute))
             {
                 XVelocity =- Speed;
             }
