@@ -226,6 +226,7 @@ namespace GameEngine
             if (isMyChild)
             {
                 child._parent = null;
+                child._localTransform = child._globalTransform;
             }
         }
 

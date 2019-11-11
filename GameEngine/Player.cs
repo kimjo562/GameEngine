@@ -29,6 +29,8 @@ namespace GameEngine
             _input.AddKeyEvent(MoveLeft, 97); // A
             _input.AddKeyEvent(MoveUp, 119); // W
             _input.AddKeyEvent(MoveDown, 115); // S
+            _input.AddKeyEvent(DetachSword, 113); // Q
+            _input.AddKeyEvent(AttachSword, 101); // E
         }
 
         // Creates a new PLayer with the specified symbol and adds movement key event.
@@ -42,6 +44,8 @@ namespace GameEngine
             _input.AddKeyEvent(MoveLeft, 97); // A
             _input.AddKeyEvent(MoveUp, 119); // W
             _input.AddKeyEvent(MoveDown, 115); // S
+            _input.AddKeyEvent(DetachSword, 113); // Q
+            _input.AddKeyEvent(AttachSword, 101); // E
         }
 
         private void Orbit()
@@ -65,6 +69,12 @@ namespace GameEngine
             AddChild(_sword);
             _sword.X = 1f;
             _sword.Y = 0.5f;
+        }
+
+        // Drops the sword
+        private void DetachSword()
+        {
+            RemoveChild(_sword);
         }
 
         // Move one space to the right.
