@@ -24,8 +24,10 @@ namespace GameEngine
         private static Scene _currentScene;
         // The Scene we are about to go to
         private static Scene _nextScene;
+        // The timer for the entire Game
+        private Timer _gameTimer;
         // The Camera for the 3d View
-         private Camera3D _camera;
+        // private Camera3D _camera;
 
         // Game Constructor
         public Game()
@@ -33,11 +35,13 @@ namespace GameEngine
             RL.InitWindow(800, 400, "Smote");
             RL.SetTargetFPS(30);
 
-/*            Raylib.Vector3 cameraPosition = new Raylib.Vector3(-10, -10, -10);
-            Raylib.Vector3 cameraTarget = new Raylib.Vector3(0, 0, 0);
-            Raylib.Vector3 cameraUp = new Raylib.Vector3(0, 0, -1);
+            _gameTimer = new Timer();
 
-            _camera = new Camera3D(cameraPosition, cameraTarget, cameraUp);  */
+            /*            Raylib.Vector3 cameraPosition = new Raylib.Vector3(-10, -10, -10);
+                        Raylib.Vector3 cameraTarget = new Raylib.Vector3(0, 0, 0);
+                        Raylib.Vector3 cameraUp = new Raylib.Vector3(0, 0, -1);
+
+                        _camera = new Camera3D(cameraPosition, cameraTarget, cameraUp);  */
         }
 
         private void Initalize()
@@ -69,8 +73,10 @@ namespace GameEngine
               Press escape button to close the game.
             PlayerInput.AddKeyEvent(ExitButton, ConsoleKey.Escape);
             */
-
             Initalize();
+
+            Camera2D camera = new Camera2D();
+            camera.zoom = 2;
 
             // Loops until the game is over.
             while (!GameOver && !RL.WindowShouldClose())
@@ -83,7 +89,7 @@ namespace GameEngine
 
                 
                 // Update the Active Scene
-                _currentScene.Update();
+                _currentScene.Update(_gameTimer.GetDeltaTime());
 
                 // Start the Scene if needed
                 if(!_currentScene.Started)
@@ -92,9 +98,11 @@ namespace GameEngine
                 }
                 // Draw the Active Scene
                 RL.BeginDrawing();
-             //   RL.BeginMode3D(_camera);
+                //   RL.BeginMode3D(_camera);
+                RL.BeginMode2D(camera);
                 _currentScene.Draw();
-             //   RL.EndMode3D();
+                //   RL.EndMode3D();
+                RL.EndMode2D();
                 RL.EndDrawing();
 
             }

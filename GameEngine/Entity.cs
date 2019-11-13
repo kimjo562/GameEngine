@@ -10,12 +10,13 @@ using RL = Raylib.Raylib;
 namespace GameEngine
 {
     delegate void Event();
+    delegate void UpdateEvent(float deltaTime);
 
     class Entity
     {
         // The List of all the Entities in the Scene
         public Event OnStart;
-        public Event OnUpdate;
+        public UpdateEvent OnUpdate;
         public Event OnDraw;
 
         protected Entity _parent = null;
@@ -32,8 +33,13 @@ namespace GameEngine
         // private float _scale = 1.0f;
         private Matrix3 _localTransform = new Matrix3();
         private Matrix3 _globalTransform = new Matrix3();
+        // 
+        private bool _started = false;
 
-
+        public bool Started
+        {
+            get { return _started; }
+        }
         // The Character representing the Entity on the screen
         public char Icon { get; set; } = ' ';
         // The image representing the Entity on the screen.
@@ -197,6 +203,14 @@ namespace GameEngine
             }
         }
 
+        // Find the distance between this Entity and another
+        public float GetDistance(Entity other)
+        {
+            Vector3 position = new Vector3(XAbsolute, YAbsolute, 1);
+            Vector3 otherPosition = new Vector3(other.XAbsolute, other.YAbsolute, 1);
+            return position.Distance(otherPosition);
+        }
+
         public int GetChildCount()
         {
             return _children.Count;
@@ -264,10 +278,11 @@ namespace GameEngine
         {
             // Checks to see if the Delegate has something in it.
             OnStart?.Invoke();
+            _started = true;
         }
 
         // Call the Entity's OnUpdate event
-        public void Update()
+        public void Update(float deltaTime)
         {
             // _location += _velocity;
             // Matrix3 transform = _translation * _rotation;
@@ -275,7 +290,7 @@ namespace GameEngine
             X += _velocity.x;
             Y += _velocity.y;
             UpdateTransform();
-            OnUpdate?.Invoke();
+            OnUpdate?.Invoke(deltaTime);
         }
 
         // Call the Entity's OnDraw event

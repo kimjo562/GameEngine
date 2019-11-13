@@ -48,24 +48,30 @@ namespace GameEngine
             _input.AddKeyEvent(AttachSword, 101); // E
         }
 
-        private void Orbit()
+        private void Orbit(float deltaTime)
         {
             foreach (Entity child in _children)
             {
-                child.Rotate(-0.5f);
+                child.Rotate(-2.5f * deltaTime);
             }
-             Rotate(0.1f);
+             // Rotate(0.1f);
         }
 
         //Create and add a sword to the scene
         private void CreateSword()
         {
             CurrentScene.AddEntity(_sword);
+            _sword.X = X;
+            _sword.Y = Y;
         }
 
         // Add sword as a child
         private void AttachSword()
         {
+            if (_sword.CurrentScene != CurrentScene || GetDistance(_sword) > 1)
+            {
+                return;
+            }
             AddChild(_sword);
             _sword.X = 1f;
             _sword.Y = 0.5f;
@@ -75,6 +81,11 @@ namespace GameEngine
         private void DetachSword()
         {
             RemoveChild(_sword);
+        }
+
+        public Entity Sword
+        {
+            get { return _sword; }
         }
 
         // Move one space to the right.
@@ -156,6 +167,13 @@ namespace GameEngine
             if (destination == null)
             {
                 return;
+            }
+
+            if (_sword.Parent == this)
+            {
+                // Remove the sword from the current room
+                CurrentScene.RemoveEntity(_sword);
+                destination.AddEntity(_sword);
             }
 
             // Remove the player from its current Room

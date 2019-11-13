@@ -13,7 +13,7 @@ namespace GameEngine
     {
         // Events that are called when the scene is Started, Updated and Drawn.
         public Event OnStart;
-        public Event OnUpdate;
+        public UpdateEvent OnUpdate;
         public Event OnDraw;
 
         // The List of all the Entities in the Scene
@@ -29,6 +29,7 @@ namespace GameEngine
         private bool[,] _wallCollision;
         // The grid for Entity Tracking
         private List<Entity>[,] _tracking;
+        // 
         private bool _started = false;
         // Creates a Scene with a size of 24 x 8
         public Scene() : this(24, 8)
@@ -79,14 +80,17 @@ namespace GameEngine
             OnStart?.Invoke();
             foreach (Entity e in _entities)
             {
-                e.Start();
+                if(!e.Started)
+                {
+                    e.Start();
+                }
             }
             _started = true;
         }
 
-        public void Update()
+        public void Update(float deltaTime)
         {
-            OnUpdate?.Invoke();
+            OnUpdate?.Invoke(deltaTime);
 
             // Clear the tracking grid
             for (int y = 0; y < _sizeY; y++)
@@ -136,7 +140,7 @@ namespace GameEngine
             foreach (Entity e in _entities)
             {
                 //Call the Entity's Update events
-                e.Update();
+                e.Update(deltaTime);
             }
 
         }

@@ -26,7 +26,7 @@ namespace GameEngine
             OnKeyPress += keyPressed;
         }
 
-        public void InputDevice()
+        public void InputDevice(float deltaTime)
         {
             // ConsoleKey inputKey = Console.ReadKey().Key;
             int inputKey = RL.GetKeyPressed();
