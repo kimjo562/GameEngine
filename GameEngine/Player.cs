@@ -54,7 +54,7 @@ namespace GameEngine
             {
                 child.Rotate(-2.5f * deltaTime);
             }
-             // Rotate(0.1f);
+              // Rotate(0.1f);
         }
 
         //Create and add a sword to the scene
@@ -69,6 +69,7 @@ namespace GameEngine
         private void AttachSword()
         {
             if (_sword.CurrentScene != CurrentScene || GetDistance(_sword) > 1)
+            //if(!Hitbox.Overlaps(_sword.Hitbox))
             {
                 return;
             }

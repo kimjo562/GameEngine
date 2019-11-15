@@ -25,17 +25,17 @@ namespace GameEngine
 
         public float Bottom
         {   // Wall Displacement and px affect location of enemy entity (px 16 + wall Displace)
-            get { return YAbsolute + Height + 0.4f; }
+            get { return YAbsolute + Height + 0.5f; }
         }
 
         public float Left
         {   // Wall Displacement and px affect location of enemy entity (px 15 + wall Displace)
-            get { return XAbsolute + 0.7f; }
+            get { return XAbsolute + 0.5f; }
         }
 
         public float Right
         {   // Wall Displacement and px affect location of enemy entity (px 15 + wall Displace)
-            get { return XAbsolute + Width + 0.4f; }
+            get { return XAbsolute + Width + 0.5f; }
         }
 
         public float Width

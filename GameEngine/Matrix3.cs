@@ -8,7 +8,7 @@ namespace GameEngine
 {
     class Matrix3
     {
-        // Creates a Matrix3 equal to the ____ matrix
+        // Creates a Matrix3 equal to the identity matrix
         public float m1x1, m1x2, m1x3, m2x1, m2x2, m2x3, m3x1, m3x2, m3x3;
 
         public static Matrix3 identity = new Matrix3();
@@ -20,7 +20,7 @@ namespace GameEngine
             m3x1 = 0; m3x2 = 0; m3x3 = 1;  // 0 0 1
         }
 
-        // Creates a Matrix3 with the specifited values.
+        // Creates a Matrix3 with the specified values.
         public Matrix3(float m1x1, float m1x2, float m1x3, float m2x1, float m2x2, float m2x3, float m3x1, float m3x2, float m3x3)
         {
             this.m1x1 = m1x1; this.m1x2 = m1x2; this.m1x3 = m1x3;  // 1 0 0

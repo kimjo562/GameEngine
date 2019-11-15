@@ -184,8 +184,8 @@ namespace GameEngine
                         // Texture 
                         Texture2D texture = e.Sprite.Texture;
                         // Position
-                        float positionX = e.Sprite.XAbsolute * Game.UnitSize.x;
-                        float positionY = e.Sprite.YAbsolute * Game.UnitSize.y;
+                        float positionX = e.Sprite.XAbsolute * Game.UnitSize.x + Game.UnitSize.x / 2;
+                        float positionY = e.Sprite.YAbsolute * Game.UnitSize.y + Game.UnitSize.y / 2;
                         Raylib.Vector2 position = new Raylib.Vector2(positionX, positionY);
                         // Rotation
                         float rotation = e.Rotation * (float)(180.0f/Math.PI);

@@ -33,7 +33,10 @@ namespace GameEngine
         // private float _scale = 1.0f;
         private Matrix3 _localTransform = new Matrix3();
         private Matrix3 _globalTransform = new Matrix3();
-        // 
+
+        public AABB Hitbox { get; set; }
+
+        // Whether this Entity's start method has been called
         private bool _started = false;
 
         public bool Started
@@ -172,12 +175,13 @@ namespace GameEngine
         // Creates an Entity with default values
         public Entity()
         {
-
-
+            Hitbox = new AABB(
+               new Vector3(XAbsolute - 0.5f, YAbsolute - 0.5f, 1),
+               new Vector3(XAbsolute + 0.5f, YAbsolute + 0.5f, 1));
         }
 
         // Overloaded Constructor
-        public Entity(char icon)
+        public Entity(char icon) : this()
         {
             Icon = icon;
         }
@@ -279,24 +283,28 @@ namespace GameEngine
             // Checks to see if the Delegate has something in it.
             OnStart?.Invoke();
             _started = true;
+            Hitbox = new AABB(
+    new Vector3(XAbsolute - 0.5f, YAbsolute - 0.5f, 1),
+    new Vector3(XAbsolute + 0.5f, YAbsolute + 0.5f, 1));
         }
 
         // Call the Entity's OnUpdate event
         public void Update(float deltaTime)
         {
+            OnUpdate?.Invoke(deltaTime);
             // _location += _velocity;
             // Matrix3 transform = _translation * _rotation;
             //_location = transform * _location;
             X += _velocity.x;
             Y += _velocity.y;
-            UpdateTransform();
-            OnUpdate?.Invoke(deltaTime);
+            Hitbox.Move(new Vector3(XAbsolute, YAbsolute, 1));
         }
 
         // Call the Entity's OnDraw event
         public void Draw()
         {
             OnDraw?.Invoke();
+            Hitbox.Draw(Color.LIME);
         }
     }
 }

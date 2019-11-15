@@ -76,7 +76,7 @@ namespace GameEngine
             Initalize();
 
             Camera2D camera = new Camera2D();
-            camera.zoom = 2;
+            camera.zoom = 1;
 
             // Loops until the game is over.
             while (!GameOver && !RL.WindowShouldClose())

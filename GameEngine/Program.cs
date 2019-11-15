@@ -10,6 +10,7 @@ namespace GameEngine
     {
         static void Main(string[] args)
         {
+            // MatrixTest()
             //Examples();
             //return;
 
@@ -100,6 +101,11 @@ namespace GameEngine
             Console.WriteLine(new Matrix2(90, 54, 18, 114) * new Vector2(2, 4));
 
             Console.ReadKey();
+        }
+
+        static void AABBTest()
+        {
+
         }
     }
 }
